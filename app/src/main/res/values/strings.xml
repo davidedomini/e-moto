@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">E-moto</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="login">Login</string>
+    <string name="non_hai_ancora_un_account_registrati">Non hai ancora un account? Registrati!</string>
+</resources>
