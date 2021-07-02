@@ -4,4 +4,8 @@
     <string name="password">password</string>
     <string name="login">Login</string>
     <string name="non_hai_ancora_un_account_registrati">Non hai ancora un account? Registrati!</string>
+    <string name="data_di_nascita">Data di nascita</string>
+    <string name="registrati">Registrati</string>
+    <string name="citt">Città</string>
+    <string name="iscrizione_emoto">Iscrizione eMoto</string>
 </resources>
