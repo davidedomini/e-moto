@@ -1,16 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <include layout="@layout/topbar" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:id="@+id/moto_images"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:orientation="vertical">
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/modello_dettaglio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Modello"
+                android:textSize="30dp"
+                android:textStyle="italic"
+                android:fontFamily="sans-serif"
+                android:layout_marginTop="25dp"
+                android:textAlignment="center"
+                />
+
+            <ImageView
+                android:id="@+id/moto_images"
+                android:layout_width="370dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                />
+
+            <TextView
+                android:id="@+id/prezzo_dettaglio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Prezzo"
+                android:layout_marginTop="15dp"
+                android:layout_marginHorizontal="15dp"
+                />
+
+            <TextView
+                android:id="@+id/descrizione_dettaglio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Descrizione"
+                android:layout_marginTop="15dp"
+                android:layout_marginHorizontal="15dp"
+                />
+
+            <com.mapbox.mapboxsdk.maps.MapView
+                android:layout_width="370dp"
+                android:layout_height="300dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
+                />
+
+            <Button
+                android:id="@+id/contatta_venditore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Contatta venditore"
+
+                android:layout_gravity="center_horizontal"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </ScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

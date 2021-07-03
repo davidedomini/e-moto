@@ -61,7 +61,7 @@
 
         android:layout_gravity="center_horizontal"
         />
-333x
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
