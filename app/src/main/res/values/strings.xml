@@ -12,5 +12,8 @@
     <string name="areapersonale">areapersonale</string>
     <string name="immagine_della_moto">Immagine della moto</string>
     <string name="mapbox_access_token">pk.eyJ1IjoiZG9tbTk5IiwiYSI6ImNrcW5pZjBpbjBidGIyb28ycDhmcnBvazkifQ.UdrrXBWIK1c43R5mhlHUOA</string>
+    <string name="gestisci_profilo">Gestisci Profilo</string>
+    <string name="moto_richieste">Moto richieste</string>
+    <string name="moto_personali_in_vendita">Moto personali in vendita</string>
 
 </resources>
