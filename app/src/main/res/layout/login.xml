@@ -63,4 +63,12 @@
         android:layout_marginTop="30dp"
         android:textAlignment="center"/>
 
+    <ProgressBar
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/progressbar_login"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"/>
+
 </androidx.appcompat.widget.LinearLayoutCompat>

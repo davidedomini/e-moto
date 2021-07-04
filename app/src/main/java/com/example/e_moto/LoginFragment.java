@@ -70,6 +70,8 @@ public class LoginFragment extends Fragment {
                         return;
                     }
 
+                    activity.findViewById(R.id.progressbar_login).setVisibility(View.VISIBLE);
+
                     mAuth.signInWithEmailAndPassword(usr, pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -77,14 +79,14 @@ public class LoginFragment extends Fragment {
                                 Toast.makeText(activity.getApplicationContext(), "Login effettuato con successo!", Toast.LENGTH_SHORT ).show();
                                 activity.startActivity(new Intent(activity.getApplicationContext(), HomeActivity.class));
                             }else{
-                                Toast.makeText(activity.getApplicationContext(), "Errore!", Toast.LENGTH_SHORT ).show();
+                                Toast.makeText(activity.getApplicationContext(), "Errore username o password sbagliati!", Toast.LENGTH_SHORT ).show();
+                                activity.findViewById(R.id.progressbar_login).setVisibility(View.GONE);
                             }
                         }
                     });
 
                 }
             });
-
 
 
 

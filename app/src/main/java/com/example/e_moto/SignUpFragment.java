@@ -69,6 +69,8 @@ public class SignUpFragment extends Fragment {
                         return;
                     }
 
+                    activity.findViewById(R.id.progressbar_signup).setVisibility(View.VISIBLE);
+
                     mAuth.createUserWithEmailAndPassword(usr, pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {

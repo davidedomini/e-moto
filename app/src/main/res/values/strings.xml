@@ -15,5 +15,6 @@
     <string name="gestisci_profilo">Gestisci Profilo</string>
     <string name="moto_richieste">Moto richieste</string>
     <string name="moto_personali_in_vendita">Moto personali in vendita</string>
+    <string name="logout">Logout</string>
 
 </resources>
