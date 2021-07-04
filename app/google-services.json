@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "138163879686",
+    "project_id": "e-moto-3eaf4",
+    "storage_bucket": "e-moto-3eaf4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:138163879686:android:b9063ef3f0e8e6ac4ca887",
+        "android_client_info": {
+          "package_name": "com.example.e_moto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "138163879686-mpas9lehor6ppl816ba0s59bjg1qr3ou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxmn0Rkb0Du0xGM_8TqFmZ4hUYEp7LD5w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "138163879686-mpas9lehor6ppl816ba0s59bjg1qr3ou.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

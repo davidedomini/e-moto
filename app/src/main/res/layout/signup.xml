@@ -17,7 +17,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/username_signup"
         android:hint="@string/username"
         app:startIconDrawable="@drawable/ic_baseline_account_circle_24"
         android:layout_marginTop="80dp"
@@ -27,6 +26,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/username_signup"
             android:imeOptions="flagNoExtractUi"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -34,7 +34,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/password_signup"
         android:hint="@string/password"
         app:startIconDrawable="@drawable/ic_baseline_lock_24"
         android:layout_marginTop="20dp"
@@ -44,6 +43,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/password_signup"
             android:inputType="textPassword"
             android:imeOptions="flagNoExtractUi"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -52,7 +52,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/birthday_signup"
         android:hint="@string/data_di_nascita"
         app:startIconDrawable="@drawable/ic_baseline_cake_24"
         android:layout_marginTop="20dp"
@@ -62,6 +61,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/birthday_signup"
             android:inputType="datetime"
             android:imeOptions="flagNoExtractUi"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -70,7 +70,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/city"
         android:hint="@string/citt"
         app:startIconDrawable="@drawable/ic_baseline_location_city_24"
         android:layout_marginTop="20dp"
@@ -80,6 +79,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/city"
             android:imeOptions="flagNoExtractUi"/>
     </com.google.android.material.textfield.TextInputLayout>
 
