@@ -52,40 +52,39 @@ public class SignUpFragment extends Fragment {
             password = activity.findViewById(R.id.password_signup);
             signupBtn = activity.findViewById(R.id.registrati);
             mAuth = FirebaseAuth.getInstance();
-        }
 
-        this.signupBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                String usr = username.getText().toString().trim();
-                String pwd = password.getText().toString().trim();
 
-                if(usr.isEmpty()){
-                    username.setError("Username is required!");
-                    return;
-                }
-                if(pwd.isEmpty()){
-                    password.setError("Password is required!");
-                    return;
-                }
+            this.signupBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String usr = username.getText().toString().trim();
+                    String pwd = password.getText().toString().trim();
 
-                mAuth.createUserWithEmailAndPassword(usr, pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(activity.getApplicationContext(), "Utente registrato correttamente!", Toast.LENGTH_SHORT ).show();
-                            activity.startActivity(new Intent(activity.getApplicationContext(), HomeActivity.class));
-                        }else{
-                            Toast.makeText(activity.getApplicationContext(), "Errore!", Toast.LENGTH_SHORT ).show();
-                        }
+                    if (usr.isEmpty()) {
+                        username.setError("Username is required!");
+                        return;
                     }
-                });
+                    if (pwd.isEmpty()) {
+                        password.setError("Password is required!");
+                        return;
+                    }
 
+                    mAuth.createUserWithEmailAndPassword(usr, pwd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(activity.getApplicationContext(), "Utente registrato correttamente!", Toast.LENGTH_SHORT).show();
+                                activity.startActivity(new Intent(activity.getApplicationContext(), HomeActivity.class));
+                            } else {
+                                Toast.makeText(activity.getApplicationContext(), "Errore!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
-            }
-        });
+                }
+            });
 
-
+        }
 
     }
 }
