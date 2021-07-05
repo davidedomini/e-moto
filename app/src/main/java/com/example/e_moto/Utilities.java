@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -15,7 +16,7 @@ public class Utilities {
         transaction.replace(R.id.fragment_container_view, fragment, tag);
 
 
-        if( !(fragment instanceof LoginFragment) ){
+        if( !(fragment instanceof LoginFragment) && !(fragment instanceof SettingsFragment) && !(fragment instanceof SignUpFragment) && !(fragment instanceof HomeFragment)  ){
             transaction.addToBackStack(tag);
         }
 
@@ -28,6 +29,16 @@ public class Utilities {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("username", usr);
         editor.apply();
+    }
+
+    static void setUpToolbar(AppCompatActivity activity, String title) {
+        Toolbar toolbar = activity.findViewById(R.id.top_bar);
+        toolbar.setTitle(title);
+
+        if (activity.getSupportActionBar() == null){
+            //Set a Toolbar to act as the ActionBar for the Activity
+            activity.setSupportActionBar(toolbar);
+        }
     }
 
 
