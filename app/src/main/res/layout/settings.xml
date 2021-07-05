@@ -9,18 +9,18 @@
     <include layout="@layout/topbar" />
 
     <Button
-        android:id="@+id/gestisci_profilo"
+        android:id="@+id/vendi_moto"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="25dp"
-        android:text="@string/gestisci_profilo"
+        android:text="@string/vendi_moto"
         android:layout_gravity="center"
         />
 
     <Button
         android:id="@+id/asked_moto"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="25dp"
         android:text="@string/moto_richieste"
         android:layout_gravity="center"
@@ -29,7 +29,7 @@
     <Button
         android:id="@+id/offered_moto"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="25dp"
         android:text="@string/moto_personali_in_vendita"
         android:layout_gravity="center"
@@ -38,7 +38,7 @@
     <Button
         android:id="@+id/logout"
         android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="25dp"
         android:text="@string/logout"
         android:layout_gravity="center"

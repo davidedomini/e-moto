@@ -16,5 +16,10 @@
     <string name="moto_richieste">Moto richieste</string>
     <string name="moto_personali_in_vendita">Moto personali in vendita</string>
     <string name="logout">Logout</string>
+    <string name="vendi_moto">Vendi moto</string>
+    <string name="modello">Modello</string>
+    <string name="descrizione">Descrizione</string>
+    <string name="prezzo">prezzo</string>
+    <string name="scatta_foto">Scatta foto</string>
 
 </resources>

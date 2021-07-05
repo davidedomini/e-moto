@@ -15,12 +15,11 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 public class SettingsFragment extends Fragment {
 
-    private Button profilo;
+    private Button vendiMoto;
     private Button motoRichieste;
     private Button motoInVendita;
     private Button logout;
@@ -48,7 +47,7 @@ public class SettingsFragment extends Fragment {
 
             Utilities.setUpToolbar((AppCompatActivity) activity, "eMoto");
 
-            profilo = view.findViewById(R.id.gestisci_profilo);
+            vendiMoto = view.findViewById(R.id.vendi_moto);
             motoRichieste = view.findViewById(R.id.asked_moto);
             motoRichieste = view.findViewById(R.id.offered_moto);
             logout = view.findViewById(R.id.logout);
@@ -64,6 +63,13 @@ public class SettingsFragment extends Fragment {
 
                     activity.startActivity(new Intent(activity.getApplicationContext(), MainActivity.class));
 
+                }
+            });
+
+            vendiMoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utilities.insertFragment((AppCompatActivity) activity, new SellNewMotoFragment(), "add moto fragment");
                 }
             });
 
