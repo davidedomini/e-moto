@@ -2,12 +2,14 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_layout"
-    android:layout_marginVertical="5dp"
-    app:cardCornerRadius="5dp">
+    android:layout_marginBottom="5dp"
+    android:layout_marginHorizontal="5dp"
+    app:cardCornerRadius="5dp"
+    android:backgroundTint="@color/card_color">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +17,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/moto_image"
+            android:id="@+id/card_moto_image"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:contentDescription="@string/immagine_della_moto"
@@ -27,43 +29,47 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/modello_moto"
+            android:id="@+id/card_modello_moto"
             android:text="Modello"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/moto_image"
+            app:layout_constraintLeft_toRightOf="@id/card_moto_image"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
+            android:textColor="@color/black"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/prezzo_moto"
+            android:id="@+id/card_prezzo_moto"
             android:text="Prezzo"
-            app:layout_constraintTop_toBottomOf="@id/modello_moto"
-            app:layout_constraintLeft_toRightOf="@id/moto_image"
+            app:layout_constraintTop_toBottomOf="@id/card_modello_moto"
+            app:layout_constraintLeft_toRightOf="@id/card_moto_image"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/descrizione_moto"
+            android:id="@+id/card_descrizione_moto"
             android:text="Descrizione della moto"
-            app:layout_constraintTop_toBottomOf="@id/prezzo_moto"
-            app:layout_constraintLeft_toRightOf="@id/moto_image"
+            app:layout_constraintTop_toBottomOf="@id/card_prezzo_moto"
+            app:layout_constraintLeft_toRightOf="@id/card_moto_image"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/luogo_moto"
+            android:id="@+id/card_luogo_moto"
             android:text="Luogo"
-            app:layout_constraintTop_toBottomOf="@id/descrizione_moto"
-            app:layout_constraintLeft_toRightOf="@id/moto_image"
+            app:layout_constraintTop_toBottomOf="@id/card_descrizione_moto"
+            app:layout_constraintLeft_toRightOf="@id/card_moto_image"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

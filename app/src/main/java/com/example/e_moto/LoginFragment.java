@@ -1,7 +1,9 @@
 package com.example.e_moto;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,9 +79,21 @@ public class LoginFragment extends Fragment {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
                                 Toast.makeText(activity.getApplicationContext(), "Login effettuato con successo!", Toast.LENGTH_SHORT ).show();
+
+                                //Salvataggio username nelle SharedPreferences
+                                /*SharedPreferences sharedPreferences = activity.getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("username", usr);
+                                editor.apply();*/
+
+                                Utilities.saveLoginStatus(usr, activity);
+
+                                //Chiamata alla activity della home
                                 activity.startActivity(new Intent(activity.getApplicationContext(), HomeActivity.class));
                             }else{
                                 Toast.makeText(activity.getApplicationContext(), "Errore username o password sbagliati!", Toast.LENGTH_SHORT ).show();
+
+                                //Nascondo alla progress bar
                                 activity.findViewById(R.id.progressbar_login).setVisibility(View.GONE);
                             }
                         }

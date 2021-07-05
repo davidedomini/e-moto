@@ -11,7 +11,15 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="10dp">
+<!--
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/prova"
+            android:text="aaa"
+            android:layout_gravity="center"
+            android:textAlignment="center"/> -->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

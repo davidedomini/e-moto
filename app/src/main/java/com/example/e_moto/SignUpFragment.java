@@ -1,7 +1,9 @@
 package com.example.e_moto;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -76,6 +78,9 @@ public class SignUpFragment extends Fragment {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(activity.getApplicationContext(), "Utente registrato correttamente!", Toast.LENGTH_SHORT).show();
+
+                                Utilities.saveLoginStatus(usr, activity);
+
                                 activity.startActivity(new Intent(activity.getApplicationContext(), HomeActivity.class));
                             } else {
                                 Toast.makeText(activity.getApplicationContext(), "Errore!", Toast.LENGTH_SHORT).show();

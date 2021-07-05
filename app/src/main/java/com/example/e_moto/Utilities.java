@@ -1,5 +1,9 @@
 package com.example.e_moto;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,5 +22,15 @@ public class Utilities {
 
         transaction.commit();
     }
+
+    static void saveLoginStatus(String usr, Activity activity){
+        SharedPreferences sharedPreferences = activity.getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", usr);
+        editor.apply();
+    }
+
+
+
 
 }
