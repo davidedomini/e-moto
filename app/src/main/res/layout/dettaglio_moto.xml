@@ -60,13 +60,13 @@
                 android:layout_marginHorizontal="15dp"
                 />
 
-            <com.mapbox.mapboxsdk.maps.MapView
+           <!--<com.mapbox.mapboxsdk.maps.MapView
                 android:layout_width="370dp"
                 android:layout_height="300dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="15dp"
                 />
-
+-->
             <Button
                 android:id="@+id/contatta_venditore"
                 android:layout_width="wrap_content"
