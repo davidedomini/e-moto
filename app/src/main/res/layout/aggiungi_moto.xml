@@ -107,6 +107,19 @@
                 android:background="#99cbff"
                 />
 
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:id="@+id/sell_moto"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="70dp"
+                android:text="Vendi"
+                android:backgroundTint="#03ac13"
+                android:textAlignment="center"
+                app:icon="@drawable/ic_baseline_add_business_24" />
+
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
