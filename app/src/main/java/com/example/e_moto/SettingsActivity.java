@@ -1,14 +1,22 @@
 package com.example.e_moto;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.example.e_moto.ViewModel.PicViewModel;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    private PicViewModel picViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +24,8 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         if (savedInstanceState == null)
             Utilities.insertFragment(this, new SettingsFragment(), "Settings fragment");
+
+        picViewModel = new ViewModelProvider(this).get(PicViewModel.class);
     }
 
     @Override
@@ -36,4 +46,17 @@ public class SettingsActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0 && resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            if(extras != null){
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+                picViewModel.setImageBitmap(imageBitmap);
+            }
+        }
+
+    }
 }

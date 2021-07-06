@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +33,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.example.e_moto.ViewModel.PicViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -134,6 +141,8 @@ public class SellNewMotoFragment extends Fragment {
                         }
                     });
 
+                    //Devo salvare anche l'immagine
+
                 }
             });
 
@@ -144,6 +153,28 @@ public class SellNewMotoFragment extends Fragment {
                     startLocationUpdates(activity);
                 }
             });
+
+            //Take picture
+            view.findViewById(R.id.take_pic).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if(takePictureIntent.resolveActivity(activity.getPackageManager()) != null){
+                        activity.startActivityForResult(takePictureIntent, 1);
+                    }
+                }
+            });
+
+            ImageView imageView = view.findViewById(R.id.imageView);
+            PicViewModel picViewModel = new ViewModelProvider( (ViewModelStoreOwner) activity ).get(PicViewModel.class);
+            picViewModel.getBitmap().observe(getViewLifecycleOwner(), new Observer<Bitmap>() {
+                @Override
+                public void onChanged(Bitmap bitmap) {
+                    Toast.makeText(activity.getApplicationContext(), "Set bitmap", Toast.LENGTH_SHORT).show();
+                    imageView.setImageBitmap(bitmap);
+                }
+            });
+
 
         }
     }
