@@ -54,6 +54,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -80,6 +82,9 @@ public class SellNewMotoFragment extends Fragment {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
     String imageDownloadLink;
+
+    //Firestore
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     //GPS
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -158,7 +163,7 @@ public class SellNewMotoFragment extends Fragment {
 
 
                     //Aggiungo i dati al db
-
+                    /*
                     myRef.push().setValue(newMoto).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -168,7 +173,24 @@ public class SellNewMotoFragment extends Fragment {
                                 Toast.makeText(activity.getApplicationContext(), "Errore, dati NON inseriti correttamente!", Toast.LENGTH_SHORT).show();
                             }
                         }
-                    });
+                    });*/
+
+
+
+                    db.collection("moto")
+                            .add(newMoto)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Toast.makeText(activity.getApplicationContext(), "Dati inseriti!", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(activity.getApplicationContext(), "ERRORE! Dati non inseriti!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
                     activity.findViewById(R.id.progressbar_vendi).setVisibility(View.GONE);
 

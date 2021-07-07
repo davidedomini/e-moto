@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -24,18 +27,42 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.e_moto.RecyclerView.CardAdapter;
 import com.example.e_moto.RecyclerView.OnItemListener;
 import com.example.e_moto.ViewModel.ListViewModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 public class HomeFragment extends Fragment implements OnItemListener {
 
     private CardAdapter adapter;
     private RecyclerView recyclerView;
     private ListViewModel listViewModel;
+
+    //Firestore
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    //Firebase realtime database
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = database.getReference().child("moto");
+    ArrayList<HashMap<String, String>> bikes = new ArrayList<>();
+
 
     @Nullable
     @Override
@@ -61,8 +88,91 @@ public class HomeFragment extends Fragment implements OnItemListener {
                     adapter.setData(cardItems);
                 }
             });
+
+/*
+            db.collection("moto")
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            for(DocumentChange dc : value.getDocumentChanges()) {
+                                Log.d("AAA", "Entra");
+                                if(dc.getType() == DocumentChange.Type.ADDED){
+                                    Map<String, Object> bike = dc.getDocument().getData();
+                                    String modello = (String) bike.get("modello");
+                                    String descrizione = (String) bike.get("descrizione");
+                                    String prezzo = (String) bike.get("prezzo");
+                                    String luogo = (String) bike.get("luogo");
+                                    listViewModel.addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo));
+                                }
+                            }
+                        }
+                    });*/
+
+/*
+            myRef.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    HashMap<String, String> bike = new HashMap<>();
+                    for(DataSnapshot m : snapshot.getChildren()){
+                        bike.put(m.getKey().toString(), m.getValue().toString());
+                    }
+                    bikes.add(bike);
+
+
+                    for (HashMap<String, String> h : bikes){
+                        String modello = h.get("modello");
+                        String descrizione = h.get("descrizione");
+                        String prezzo = h.get("prezzo");
+                        String luogo = h.get("luogo");
+                        listViewModel.addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo));
+                    }
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });*/
         }
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        db.collection("moto")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        for(DocumentChange dc : value.getDocumentChanges()) {
+                            Log.d("AAA", "Entra");
+                            if(dc.getType() == DocumentChange.Type.ADDED){
+                                Map<String, Object> bike = dc.getDocument().getData();
+                                String modello = (String) bike.get("modello");
+                                String descrizione = (String) bike.get("descrizione");
+                                String prezzo = (String) bike.get("prezzo");
+                                String luogo = (String) bike.get("luogo");
+                                listViewModel.addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo));
+                            }
+                        }
+                    }
+                });
     }
 
     private void setRecyclerView(final Activity activity) {
@@ -73,20 +183,6 @@ public class HomeFragment extends Fragment implements OnItemListener {
         final OnItemListener listener = this;
         adapter = new CardAdapter(activity, listener);
         recyclerView.setAdapter(adapter);
-        /*
-        List<CardItem> list = new ArrayList<>() ;
-
-        list.add(new CardItem("ic_baseline_directions_bike_24", "Aprilia rs50", "800€", "Scooter aprilia", "Ravenna"));
-        list.add(new CardItem("ic_baseline_directions_bike_24", "BMW G310R", "3000€", "BMW naked media", "Milano"));
-        list.add(new CardItem("ic_baseline_directions_bike_24", "Yamaha mt03", "5000€", "Yamaha naked", "Napoli"));
-        list.add(new CardItem("ic_baseline_directions_bike_24", "KTM Duke 390", "6000€", "Naked KTM", "Bologna"));
-        list.add(new CardItem("ic_baseline_directions_bike_24", "Ducati Monster", "10000€", "Naked Ducati", "Ravenna"));
-        list.add(new CardItem("ic_baseline_directions_bike_24", "Ducati Scrambler", "15000€", "Scambler Ducati", "Salerno"));
-        list.add(new CardItem("ic_baseline_directions_bike_24", "Ducati panigale", "2000€", "Ducati sportiva", "Modena"));
-        list.add(new CardItem("ic_baseline_directions_bike_24", "Ducati hypermotard", "16000€", "Ducati motard", "Roma"));
-
-        adapter = new CardAdapter(activity, list);
-        recyclerView.setAdapter(adapter);*/
     }
 
     @Override
