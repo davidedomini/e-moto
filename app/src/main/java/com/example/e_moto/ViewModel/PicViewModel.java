@@ -3,6 +3,7 @@ package com.example.e_moto.ViewModel;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -16,6 +17,7 @@ import com.example.e_moto.Utilities;
 public class PicViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Bitmap> imageBitmap = new MutableLiveData<>();
+
     private final Application application;
 
     public PicViewModel(@NonNull Application application) {
@@ -23,6 +25,7 @@ public class PicViewModel extends AndroidViewModel {
         this.application = application;
 
     }
+
 
     public void setImageBitmap(Bitmap bitmap){
         imageBitmap.setValue(bitmap);

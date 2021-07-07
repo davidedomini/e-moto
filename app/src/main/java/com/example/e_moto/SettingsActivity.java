@@ -2,9 +2,12 @@ package com.example.e_moto;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,14 +52,13 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0 && resultCode == RESULT_OK){
+        if (requestCode == 1 && resultCode == RESULT_OK){
+
             Bundle extras = data.getExtras();
             if(extras != null){
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
-
                 picViewModel.setImageBitmap(imageBitmap);
             }
         }
-
     }
 }

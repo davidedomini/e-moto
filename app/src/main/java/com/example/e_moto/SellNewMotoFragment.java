@@ -3,6 +3,7 @@ package com.example.e_moto;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
@@ -20,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,17 +41,24 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.e_moto.ViewModel.PicViewModel;
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
 public class SellNewMotoFragment extends Fragment {
@@ -58,10 +68,18 @@ public class SellNewMotoFragment extends Fragment {
     private TextInputEditText descrizione;
     private TextInputEditText prezzo;
     private Button vendi;
+    private ImageView imageView;
+    private Uri imageUri;
+    private Bitmap imageBitmap;
 
-    //Realtime database
+    //Firebase realtime database
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference().child("moto");
+
+    //Firebase cloud storage
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef = storage.getReference();
+    String imageDownloadLink;
 
     //GPS
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -104,7 +122,9 @@ public class SellNewMotoFragment extends Fragment {
             this.descrizione = view.findViewById(R.id.descrizione_add);
             this.prezzo = view.findViewById(R.id.prezzo_add);
             this.vendi = view.findViewById(R.id.sell_moto);
+            this.imageView = view.findViewById(R.id.imageView);
             TextView luogo = view.findViewById(R.id.luogoTextView);
+
 
             this.vendi.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -119,6 +139,14 @@ public class SellNewMotoFragment extends Fragment {
                     SharedPreferences sharedPreferences = activity.getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
                     String usr = sharedPreferences.getString("username", "not exist");
 
+                    activity.findViewById(R.id.progressbar_vendi).setVisibility(View.VISIBLE);
+
+                    byte bytes[] = getImageBytes(imageBitmap);
+                    String child = usr + ": " + model;
+
+                    storageRef.child(child).putBytes(bytes);
+
+                    imageDownloadLink = "gs://e-moto-3eaf4.appspot.com" + "/" + usr + ": " + model;
 
                     //Creo una hashmap con i dati della nuova moto
                     HashMap<String, String> newMoto = new HashMap<>();
@@ -127,8 +155,11 @@ public class SellNewMotoFragment extends Fragment {
                     newMoto.put("prezzo", price);
                     newMoto.put("utente venditore", usr);
                     newMoto.put("luogo", location);
+                    newMoto.put("Download link", imageDownloadLink);
+
 
                     //Aggiungo i dati al db
+
                     myRef.push().setValue(newMoto).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -137,11 +168,10 @@ public class SellNewMotoFragment extends Fragment {
                             } else {
                                 Toast.makeText(activity.getApplicationContext(), "Errore, dati NON inseriti correttamente!", Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
 
-                    //Devo salvare anche l'immagine
+                    activity.findViewById(R.id.progressbar_vendi).setVisibility(View.GONE);
 
                 }
             });
@@ -165,16 +195,15 @@ public class SellNewMotoFragment extends Fragment {
                 }
             });
 
-            ImageView imageView = view.findViewById(R.id.imageView);
+
             PicViewModel picViewModel = new ViewModelProvider( (ViewModelStoreOwner) activity ).get(PicViewModel.class);
             picViewModel.getBitmap().observe(getViewLifecycleOwner(), new Observer<Bitmap>() {
                 @Override
                 public void onChanged(Bitmap bitmap) {
-                    Toast.makeText(activity.getApplicationContext(), "Set bitmap", Toast.LENGTH_SHORT).show();
+                    imageBitmap = bitmap;
                     imageView.setImageBitmap(bitmap);
                 }
             });
-
 
         }
     }
@@ -192,6 +221,7 @@ public class SellNewMotoFragment extends Fragment {
         super.onPause();
         stopLocationUpdates();
     }
+
 
     private void initializeLocation(Activity activity) {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
@@ -262,5 +292,12 @@ public class SellNewMotoFragment extends Fragment {
         }
     }
 
+
+    private byte[] getImageBytes(Bitmap thumbnail){
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        byte bb[] = bytes.toByteArray();
+        return bb;
+    }
 
 }
