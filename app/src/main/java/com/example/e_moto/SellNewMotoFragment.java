@@ -88,7 +88,6 @@ public class SellNewMotoFragment extends Fragment {
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private boolean requestingLocationUpdates = false;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
