@@ -39,6 +39,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class HomeFragment extends Fragment implements OnItemListener {
 
             listViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(ListViewModel.class);
 
+
             listViewModel.getCardItems().observe((LifecycleOwner) activity, new Observer<List<CardItem>>() {
                 @Override
                 public void onChanged(List<CardItem> cardItems) {
@@ -96,7 +98,7 @@ public class HomeFragment extends Fragment implements OnItemListener {
                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                             for(DocumentChange dc : value.getDocumentChanges()) {
                                 Log.d("AAA", "Entra");
-                                if(dc.getType() == DocumentChange.Type.ADDED){
+                                if(dc.getType() == DocumentChange.Type.MODIFIED){
                                     Map<String, Object> bike = dc.getDocument().getData();
                                     String modello = (String) bike.get("modello");
                                     String descrizione = (String) bike.get("descrizione");
@@ -107,8 +109,8 @@ public class HomeFragment extends Fragment implements OnItemListener {
                             }
                         }
                     });*/
-
 /*
+
             myRef.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -153,27 +155,6 @@ public class HomeFragment extends Fragment implements OnItemListener {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        db.collection("moto")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        for(DocumentChange dc : value.getDocumentChanges()) {
-                            Log.d("AAA", "Entra");
-                            if(dc.getType() == DocumentChange.Type.ADDED){
-                                Map<String, Object> bike = dc.getDocument().getData();
-                                String modello = (String) bike.get("modello");
-                                String descrizione = (String) bike.get("descrizione");
-                                String prezzo = (String) bike.get("prezzo");
-                                String luogo = (String) bike.get("luogo");
-                                listViewModel.addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo));
-                            }
-                        }
-                    }
-                });
-    }
 
     private void setRecyclerView(final Activity activity) {
         // Set up the RecyclerView
