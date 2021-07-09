@@ -2,6 +2,8 @@ package com.example.e_moto.ViewModel;
 
 import android.app.Activity;
 import android.app.Application;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,7 +14,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.e_moto.CardItem;
+import com.example.e_moto.Repository;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,34 +42,23 @@ public class ListViewModel extends AndroidViewModel {
     private MutableLiveData<List<CardItem>> cardItems;
     private final MutableLiveData<CardItem> itemSelected = new MutableLiveData<>();
 
-    //Firebase realtime database
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef = database.getReference().child("moto");
     ArrayList<HashMap<String, String>> bikes = new ArrayList<>();
 
 
+    //Image Storage
+
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef = storage.getReference();
+
+    //DB
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public ListViewModel(@NonNull Application application) {
         super(application);
-        db.collection("moto")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for(QueryDocumentSnapshot d : task.getResult()){
-                                Map<String, Object> bike = d.getData();
-                                //Log.d("AAA", d.getData().toString());
-                                String modello = (String) bike.get("modello");
-                                String descrizione = (String) bike.get("descrizione");
-                                String prezzo = (String) bike.get("prezzo");
-                                String luogo = (String) bike.get("luogo");
-                                addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo));
-                            }
-                        }
-                    }
-                });
+
+        ArrayList<CardItem> items = new ArrayList<>();
+        this.cardItems = new MutableLiveData<>(items);
+        getElements();
 
     }
 
@@ -77,12 +72,54 @@ public class ListViewModel extends AndroidViewModel {
 
     public LiveData<List<CardItem>> getCardItems(){
 
+        /*
         if(this.cardItems == null){
             this.cardItems = new MutableLiveData<>();
             loadItems();
-        }
+        }*/
         return this.cardItems;
     }
+
+    public void reset(){
+        ArrayList<CardItem> list = new ArrayList<>();
+        this.cardItems.setValue(list);
+    }
+
+
+    public void getElements(){
+
+        this.cardItems.setValue(new ArrayList<CardItem>());
+
+        db.collection("moto")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for(QueryDocumentSnapshot d : task.getResult()){
+                                Map<String, Object> bike = d.getData();
+                                String modello = (String) bike.get("modello");
+                                String descrizione = (String) bike.get("descrizione");
+                                String prezzo = (String) bike.get("prezzo");
+                                String luogo = (String) bike.get("luogo");
+                                String usr = (String) bike.get("utente venditore");
+                                String downloadLink = (String) bike.get("Download link");
+
+
+                                storageRef.child(usr + ": " + modello).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        Bitmap bt = BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
+                                        addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo, bt));
+                                    }
+                                });
+                               // addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo));
+                            }
+                        }
+                    }
+                });
+    }
+
 
     private  void loadItems(){
         //Recupero i dati dal db e setto
@@ -108,7 +145,7 @@ public class ListViewModel extends AndroidViewModel {
                         }
                     }
                 });*/
-        addCardItem(new CardItem("ic_baseline_directions_bike_24", "Aprilia rs50", "800€", "Scooter aprilia", "Ravenna"));
+        //addCardItem(new CardItem("ic_baseline_directions_bike_24", "Aprilia rs50", "800€", "Scooter aprilia", "Ravenna"));
         /*addCardItem(new CardItem("ic_baseline_directions_bike_24", "BMW G310R", "3000€", "BMW naked media", "Milano"));
         addCardItem(new CardItem("ic_baseline_directions_bike_24", "Yamaha mt03", "5000€", "Yamaha naked", "Napoli"));
         addCardItem(new CardItem("ic_baseline_directions_bike_24", "KTM Duke 390", "6000€", "Naked KTM", "Bologna"));
@@ -119,12 +156,15 @@ public class ListViewModel extends AndroidViewModel {
     }
 
     public void addCardItem(CardItem item){
-        ArrayList<CardItem> list = new ArrayList<>();
-        list.add(item);
-        if(cardItems.getValue() != null){
-            list.addAll(cardItems.getValue());
-        }
-        cardItems.setValue(list);
+
+           ArrayList<CardItem> list = new ArrayList<>();
+           list.add(item);
+           if(cardItems.getValue() != null){
+               list.addAll(cardItems.getValue());
+           }
+           cardItems.setValue(list);
+
+
     }
 
     public CardItem getCardItem(int position){

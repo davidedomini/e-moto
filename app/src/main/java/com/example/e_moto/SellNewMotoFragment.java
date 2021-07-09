@@ -74,9 +74,6 @@ public class SellNewMotoFragment extends Fragment {
     private Uri imageUri;
     private Bitmap imageBitmap;
 
-    //Firebase realtime database
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef = database.getReference().child("moto");
 
     //Firebase cloud storage
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -160,21 +157,6 @@ public class SellNewMotoFragment extends Fragment {
                     newMoto.put("utente venditore", usr);
                     newMoto.put("luogo", location);
                     newMoto.put("Download link", imageDownloadLink);
-
-
-                    //Aggiungo i dati al db
-                    /*
-                    myRef.push().setValue(newMoto).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(activity.getApplicationContext(), "Dati inseriti!", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(activity.getApplicationContext(), "Errore, dati NON inseriti correttamente!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });*/
-
 
 
                     db.collection("moto")

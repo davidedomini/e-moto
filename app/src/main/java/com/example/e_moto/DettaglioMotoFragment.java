@@ -60,14 +60,14 @@ public class DettaglioMotoFragment extends Fragment {
                     prezzo.setText(cardItem.getPrezzo());
                     String image_path = cardItem.getCardImage();
 
-                    if(image_path.contains("ic_")){
+                    /*if(image_path.contains("ic_")){
                         Drawable drawable = ContextCompat.getDrawable(activity,
                                 activity.getResources().getIdentifier(image_path,
                                         "drawable", activity.getPackageName()));
 
                         image.setImageDrawable(drawable);
-                    }
-
+                    }*/
+                    image.setImageBitmap(cardItem.getBikeImage());
                 }
             });
         }

@@ -59,9 +59,6 @@ public class HomeFragment extends Fragment implements OnItemListener {
     //Firestore
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    //Firebase realtime database
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef = database.getReference().child("moto");
     ArrayList<HashMap<String, String>> bikes = new ArrayList<>();
 
 
@@ -91,66 +88,14 @@ public class HomeFragment extends Fragment implements OnItemListener {
                 }
             });
 
-/*
-            db.collection("moto")
-                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            for(DocumentChange dc : value.getDocumentChanges()) {
-                                Log.d("AAA", "Entra");
-                                if(dc.getType() == DocumentChange.Type.MODIFIED){
-                                    Map<String, Object> bike = dc.getDocument().getData();
-                                    String modello = (String) bike.get("modello");
-                                    String descrizione = (String) bike.get("descrizione");
-                                    String prezzo = (String) bike.get("prezzo");
-                                    String luogo = (String) bike.get("luogo");
-                                    listViewModel.addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo));
-                                }
-                            }
-                        }
-                    });*/
-/*
 
-            myRef.addChildEventListener(new ChildEventListener() {
+            view.findViewById(R.id.upadate_home).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    HashMap<String, String> bike = new HashMap<>();
-                    for(DataSnapshot m : snapshot.getChildren()){
-                        bike.put(m.getKey().toString(), m.getValue().toString());
-                    }
-                    bikes.add(bike);
-
-
-                    for (HashMap<String, String> h : bikes){
-                        String modello = h.get("modello");
-                        String descrizione = h.get("descrizione");
-                        String prezzo = h.get("prezzo");
-                        String luogo = h.get("luogo");
-                        listViewModel.addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo));
-                    }
+                public void onClick(View v) {
+                    listViewModel.getElements();
                 }
+            });
 
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });*/
         }
 
     }
@@ -171,7 +116,6 @@ public class HomeFragment extends Fragment implements OnItemListener {
         AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
 
         if(appCompatActivity != null){
-
             listViewModel.select(listViewModel.getCardItem(position));
             Utilities.insertFragment(appCompatActivity, new DettaglioMotoFragment(),DettaglioMotoFragment.class.getSimpleName() );
 

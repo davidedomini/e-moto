@@ -39,7 +39,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
         CardItem currentCardItem = cardItemList.get(position);
-        String imagePath = currentCardItem.getCardImage();
+
+        /*String imagePath = currentCardItem.getCardImage();
 
         if(imagePath.contains("ic_")){
             Drawable drawable = ContextCompat.getDrawable(activity, activity.getResources().getIdentifier(
@@ -47,8 +48,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
             ));
 
             holder.cardImage.setImageDrawable(drawable);
-        }
-
+        }*/
+        holder.cardImage.setImageBitmap(currentCardItem.getBikeImage());
         holder.descrizione.setText(currentCardItem.getDescrizione());
         holder.modello.setText(currentCardItem.getModello());
         holder.prezzo.setText(currentCardItem.getPrezzo());
@@ -64,4 +65,5 @@ public class CardAdapter extends RecyclerView.Adapter<CardViewHolder> {
         this.cardItemList = new ArrayList<>(list);
         notifyDataSetChanged();
     }
+
 }
