@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto">
 
     <include layout="@layout/topbar" />
     <ScrollView
@@ -60,18 +61,22 @@
                 android:layout_marginHorizontal="15dp"
                 />
 
-           <!--<com.mapbox.mapboxsdk.maps.MapView
-                android:layout_width="370dp"
-                android:layout_height="300dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="15dp"
-                />
--->
+           <com.mapbox.mapboxsdk.maps.MapView
+               android:layout_width="370dp"
+               android:layout_height="300dp"
+               android:id="@+id/bikemap"
+               android:layout_marginTop="20dp"
+               android:layout_gravity="center"
+               mapbox:mapbox_cameraTargetLat="-32.557013"
+               mapbox:mapbox_cameraTargetLng="-56.149056"
+               mapbox:mapbox_cameraZoom="5.526846" />
+
             <Button
                 android:id="@+id/contatta_venditore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
                 android:text="Contatta venditore"
                 android:layout_gravity="center_horizontal"
                 />
