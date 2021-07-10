@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.e_moto.RecyclerView.CardAdapter;
 import com.example.e_moto.RecyclerView.OnItemListener;
@@ -87,14 +88,17 @@ public class HomeFragment extends Fragment implements OnItemListener {
                     adapter.setData(cardItems);
                 }
             });
+            
 
-
-            view.findViewById(R.id.upadate_home).setOnClickListener(new View.OnClickListener() {
+            SwipeRefreshLayout refresh = view.findViewById(R.id.swipe_refresh_home);
+            refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
-                public void onClick(View v) {
+                public void onRefresh() {
                     listViewModel.getElements();
+                    refresh.setRefreshing(false);
                 }
             });
+
 
         }
 
