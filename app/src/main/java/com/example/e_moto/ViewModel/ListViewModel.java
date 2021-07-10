@@ -2,6 +2,8 @@ package com.example.e_moto.ViewModel;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -23,7 +26,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -41,7 +47,7 @@ public class ListViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<CardItem>> cardItems;
     private final MutableLiveData<CardItem> itemSelected = new MutableLiveData<>();
-
+    private String usr;
     ArrayList<HashMap<String, String>> bikes = new ArrayList<>();
 
 
@@ -55,6 +61,9 @@ public class ListViewModel extends AndroidViewModel {
 
     public ListViewModel(@NonNull Application application) {
         super(application);
+
+        SharedPreferences sharedPreferences = application.getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
+        usr = sharedPreferences.getString("username", "not exist");
 
         ArrayList<CardItem> items = new ArrayList<>();
         this.cardItems = new MutableLiveData<>(items);
@@ -90,6 +99,32 @@ public class ListViewModel extends AndroidViewModel {
 
         this.cardItems.setValue(new ArrayList<CardItem>());
 
+        db.collection("moto").whereNotEqualTo("utente venditore", usr).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                for(DocumentSnapshot d : value.getDocuments()){
+                    Map<String, Object> bike = d.getData();
+                    String modello = (String) bike.get("modello");
+                    String descrizione = (String) bike.get("descrizione");
+                    String prezzo = (String) bike.get("prezzo");
+                    String luogo = (String) bike.get("luogo");
+                    String usr = (String) bike.get("utente venditore");
+                    String downloadLink = (String) bike.get("Download link");
+
+
+                    storageRef.child(usr + ": " + modello).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            Bitmap bt = BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
+                            addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo, bt));
+                        }
+                    });
+                }
+
+            }
+        });
+/*
         db.collection("moto")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -117,7 +152,7 @@ public class ListViewModel extends AndroidViewModel {
                             }
                         }
                     }
-                });
+                });*/
     }
 
 

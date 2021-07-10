@@ -84,6 +84,7 @@ public class SignUpFragment extends Fragment {
                                 activity.startActivity(new Intent(activity.getApplicationContext(), HomeActivity.class));
                             } else {
                                 Toast.makeText(activity.getApplicationContext(), "Errore!", Toast.LENGTH_SHORT).show();
+                                activity.findViewById(R.id.progressbar_signup).setVisibility(View.GONE);
                             }
                         }
                     });

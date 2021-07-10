@@ -56,7 +56,6 @@ public class HomeFragment extends Fragment implements OnItemListener {
     private CardAdapter adapter;
     private RecyclerView recyclerView;
     private ListViewModel listViewModel;
-
     //Firestore
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -88,7 +87,7 @@ public class HomeFragment extends Fragment implements OnItemListener {
                     adapter.setData(cardItems);
                 }
             });
-            
+
 
             SwipeRefreshLayout refresh = view.findViewById(R.id.swipe_refresh_home);
             refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -99,11 +98,8 @@ public class HomeFragment extends Fragment implements OnItemListener {
                 }
             });
 
-
         }
-
     }
-
 
     private void setRecyclerView(final Activity activity) {
         // Set up the RecyclerView
