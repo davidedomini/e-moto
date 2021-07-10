@@ -73,6 +73,13 @@ public class SettingsFragment extends Fragment {
                 }
             });
 
+            view.findViewById(R.id.offered_moto).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utilities.insertFragment((AppCompatActivity) activity, new MotoInVenditaFragment(), "moto in vendita fragment");
+                }
+            });
+
         }
     }
 

@@ -48,6 +48,7 @@ public class ListViewModel extends AndroidViewModel {
     private MutableLiveData<List<CardItem>> cardItems;
     private final MutableLiveData<CardItem> itemSelected = new MutableLiveData<>();
     private String usr;
+
     ArrayList<HashMap<String, String>> bikes = new ArrayList<>();
 
 
@@ -67,9 +68,11 @@ public class ListViewModel extends AndroidViewModel {
 
         ArrayList<CardItem> items = new ArrayList<>();
         this.cardItems = new MutableLiveData<>(items);
+
         getElements();
 
     }
+
 
     public void select(CardItem cardItem){
         this.itemSelected.setValue(cardItem);
@@ -99,31 +102,32 @@ public class ListViewModel extends AndroidViewModel {
 
         this.cardItems.setValue(new ArrayList<CardItem>());
 
-        db.collection("moto").whereNotEqualTo("utente venditore", usr).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+            db.collection("moto").whereNotEqualTo("utente venditore", usr).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                for(DocumentSnapshot d : value.getDocuments()){
-                    Map<String, Object> bike = d.getData();
-                    String modello = (String) bike.get("modello");
-                    String descrizione = (String) bike.get("descrizione");
-                    String prezzo = (String) bike.get("prezzo");
-                    String luogo = (String) bike.get("luogo");
-                    String usr = (String) bike.get("utente venditore");
-                    String downloadLink = (String) bike.get("Download link");
+                    for(DocumentSnapshot d : value.getDocuments()){
+                        Map<String, Object> bike = d.getData();
+                        String modello = (String) bike.get("modello");
+                        String descrizione = (String) bike.get("descrizione");
+                        String prezzo = (String) bike.get("prezzo");
+                        String luogo = (String) bike.get("luogo");
+                        String usr = (String) bike.get("utente venditore");
+                        String downloadLink = (String) bike.get("Download link");
 
 
-                    storageRef.child(usr + ": " + modello).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap bt = BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
-                            addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo, bt));
-                        }
-                    });
+                        storageRef.child(usr + ": " + modello).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                Bitmap bt = BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
+                                addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo, bt));
+                            }
+                        });
+                    }
+
                 }
+            });
 
-            }
-        });
 /*
         db.collection("moto")
                 .get()
