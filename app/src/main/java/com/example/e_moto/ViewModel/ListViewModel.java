@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.e_moto.CardItem;
+import com.example.e_moto.R;
 import com.example.e_moto.Repository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,14 +37,24 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.mapbox.api.geocoding.v5.GeocodingCriteria;
+import com.mapbox.api.geocoding.v5.MapboxGeocoding;
+import com.mapbox.api.geocoding.v5.models.CarmenFeature;
+import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
+import com.mapbox.geojson.Point;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import okhttp3.internal.cache.DiskLruCache;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ListViewModel extends AndroidViewModel {
 
@@ -115,15 +128,33 @@ public class ListViewModel extends AndroidViewModel {
                         String usr = (String) bike.get("utente venditore");
                         String downloadLink = (String) bike.get("Download link");
 
+                        //Converto il luogo da coordinate a nome
+                        double lat = Double.parseDouble(luogo.split(", ")[0]);
+                        double lng = Double.parseDouble(luogo.split(", ")[1]);
 
-                        storageRef.child(usr + ": " + modello).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                            @Override
-                            public void onSuccess(byte[] bytes) {
-                                Bitmap bt = BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
-                                addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo, bt));
+                        Geocoder geocoder = new Geocoder(getApplication().getApplicationContext(), Locale.ITALY);
+                        try {
+                            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+                            if(addresses.size() > 0){
+                               String address = addresses.get(0).getLocality();
+
+                                storageRef.child(usr + ": " + modello).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        Bitmap bt = BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
+                                        addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, address, bt));
+                                    }
+                                });
+
                             }
-                        });
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                     }
+
+
 
                 }
             });

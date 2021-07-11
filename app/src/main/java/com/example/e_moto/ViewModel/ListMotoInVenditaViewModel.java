@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -23,9 +25,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ListMotoInVenditaViewModel extends AndroidViewModel {
@@ -94,14 +98,30 @@ public class ListMotoInVenditaViewModel extends AndroidViewModel {
                     String usr = (String) bike.get("utente venditore");
                     String downloadLink = (String) bike.get("Download link");
 
+                    //Converto il luogo da coordinate a nome
+                    double lat = Double.parseDouble(luogo.split(", ")[0]);
+                    double lng = Double.parseDouble(luogo.split(", ")[1]);
 
-                    storageRef.child(usr + ": " + modello).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap bt = BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
-                            addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo, bt));
+                    Geocoder geocoder = new Geocoder(getApplication().getApplicationContext(), Locale.ITALY);
+                    try {
+                        List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+                        if(addresses.size() > 0){
+                            String address = addresses.get(0).getLocality();
+
+                            storageRef.child(usr + ": " + modello).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    Bitmap bt = BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
+                                    addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, address, bt));
+                                }
+                            });
+
                         }
-                    });
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
             }

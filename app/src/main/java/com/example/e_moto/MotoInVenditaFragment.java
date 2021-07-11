@@ -87,6 +87,8 @@ public class MotoInVenditaFragment extends Fragment implements OnItemListener{
 
         if(appCompatActivity != null){
             //Cambia layout del dettaglio
+
+
             listViewModel.select(listViewModel.getCardItem(position));
             Utilities.insertFragment(appCompatActivity, new DettaglioMotoFragment(),DettaglioMotoFragment.class.getSimpleName() );
         }
