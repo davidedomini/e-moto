@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.model.Document;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
@@ -115,10 +116,10 @@ public class ListViewModel extends AndroidViewModel {
 
         this.cardItems.setValue(new ArrayList<CardItem>());
 
-            db.collection("moto").whereNotEqualTo("utente venditore", usr).addSnapshotListener(new EventListener<QuerySnapshot>() {
+
+        db.collection("moto").whereNotEqualTo("utente venditore", usr).addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
                     for(DocumentSnapshot d : value.getDocuments()){
                         Map<String, Object> bike = d.getData();
                         String modello = (String) bike.get("modello");
@@ -159,35 +160,6 @@ public class ListViewModel extends AndroidViewModel {
                 }
             });
 
-/*
-        db.collection("moto")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for(QueryDocumentSnapshot d : task.getResult()){
-                                Map<String, Object> bike = d.getData();
-                                String modello = (String) bike.get("modello");
-                                String descrizione = (String) bike.get("descrizione");
-                                String prezzo = (String) bike.get("prezzo");
-                                String luogo = (String) bike.get("luogo");
-                                String usr = (String) bike.get("utente venditore");
-                                String downloadLink = (String) bike.get("Download link");
-
-
-                                storageRef.child(usr + ": " + modello).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                    @Override
-                                    public void onSuccess(byte[] bytes) {
-                                        Bitmap bt = BitmapFactory.decodeByteArray(bytes, 0 ,bytes.length);
-                                        addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo, bt));
-                                    }
-                                });
-                               // addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo));
-                            }
-                        }
-                    }
-                });*/
     }
 
 

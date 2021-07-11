@@ -3,6 +3,8 @@ package com.example.e_moto;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,10 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
 public class DettaglioMotoFragment extends Fragment implements OnMapReadyCallback {
@@ -103,8 +109,20 @@ public class DettaglioMotoFragment extends Fragment implements OnMapReadyCallbac
                     image.setImageBitmap(cardItem.getBikeImage());
 
                     String luogo  = cardItem.getLuogo();
-                    lat = Double.parseDouble(luogo.split(", ")[0]);
-                    lng = Double.parseDouble(luogo.split(", ")[1]);
+                    //lat = Double.parseDouble(luogo.split(", ")[0]);
+                    //lng = Double.parseDouble(luogo.split(", ")[1]);
+                    Geocoder geocoder = new Geocoder(activity, Locale.ITALY);
+                    try {
+                        List<Address> addresses = geocoder.getFromLocationName(luogo, 1);
+                        if(addresses.size() > 0){
+                            lat = addresses.get(0).getLatitude();
+                            lng = addresses.get(0).getLongitude();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
             });
         }
