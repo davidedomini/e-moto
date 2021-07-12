@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_offerta"
+    android:layout_marginBottom="10dp"
+    android:layout_marginHorizontal="10dp"
+    app:cardCornerRadius="5dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/material_on_surface_emphasis_medium">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/offerta_acquirente"
+            android:layout_marginVertical="10dp"
+            android:text="Acquirente"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/offerta_moto"
+            android:layout_marginVertical="10dp"
+            android:text="Moto"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/offerta_prezzo"
+            android:layout_marginVertical="10dp"
+            android:text="Prezzo"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

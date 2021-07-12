@@ -174,6 +174,7 @@ public class DettaglioMotoFragment extends Fragment implements OnMapReadyCallbac
                                     nuovaOfferta.put("utente acquirente", usr);
                                     nuovaOfferta.put("prezzo", moto.getPrezzo());
                                     nuovaOfferta.put("utente venditore", utenteVenditore);
+                                    nuovaOfferta.put("moto", moto.getModello());
 
                                     db.collection("offerte")
                                             .add(nuovaOfferta)
