@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/offerta_acquirente"
             android:layout_marginVertical="10dp"
+            android:layout_marginLeft="10dp"
             android:text="Acquirente"/>
 
         <TextView
@@ -29,6 +30,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/offerta_moto"
             android:layout_marginVertical="10dp"
+            android:layout_marginLeft="10dp"
             android:text="Moto"/>
 
         <TextView
@@ -36,6 +38,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/offerta_prezzo"
             android:layout_marginVertical="10dp"
+            android:layout_marginLeft="10dp"
             android:text="Prezzo"/>
 
     </LinearLayout>

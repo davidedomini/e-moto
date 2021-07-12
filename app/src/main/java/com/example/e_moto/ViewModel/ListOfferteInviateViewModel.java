@@ -69,7 +69,7 @@ public class ListOfferteInviateViewModel extends AndroidViewModel {
     }
 
 
-    private void getElements() {
+    public void getElements() {
 
         reset();
         db.collection("offerte")
