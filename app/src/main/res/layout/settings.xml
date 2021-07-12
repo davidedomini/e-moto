@@ -18,11 +18,11 @@
         />
 
     <Button
-        android:id="@+id/asked_moto"
+        android:id="@+id/Offerte"
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_marginTop="25dp"
-        android:text="@string/moto_richieste"
+        android:text="Offerte"
         android:layout_gravity="center"
         />
 

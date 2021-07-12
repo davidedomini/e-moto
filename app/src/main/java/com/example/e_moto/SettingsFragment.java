@@ -48,7 +48,7 @@ public class SettingsFragment extends Fragment {
             Utilities.setUpToolbar((AppCompatActivity) activity, "eMoto");
 
             vendiMoto = view.findViewById(R.id.vendi_moto);
-            motoRichieste = view.findViewById(R.id.asked_moto);
+            motoRichieste = view.findViewById(R.id.Offerte);
             motoRichieste = view.findViewById(R.id.offered_moto);
             logout = view.findViewById(R.id.logout);
 
@@ -77,6 +77,13 @@ public class SettingsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Utilities.insertFragment((AppCompatActivity) activity, new MotoInVenditaFragment(), "moto in vendita fragment");
+                }
+            });
+
+            view.findViewById(R.id.Offerte).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utilities.insertFragment((AppCompatActivity) activity, new OfferteFragment(), "offerte fragment");
                 }
             });
 
