@@ -103,7 +103,7 @@ public class OfferteMandateFragment  extends Fragment implements OnItemListener 
 
     private void showDialog(Activity activity, CardItemOfferte cardItem){
         new AlertDialog.Builder(activity)
-                .setMessage("Cancellare l'offerta selezionata dalla vendita?")
+                .setMessage("Cancellare l'offerta selezionata?")
                 .setCancelable(false)
                 .setPositiveButton("Si", (dialog, id) -> deleteOffer(cardItem))
                 .setNegativeButton("NO", (dialog, id) -> dialog.cancel())
