@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 public class Utilities {
@@ -23,10 +24,10 @@ public class Utilities {
         if( !(fragment instanceof LoginFragment) && !(fragment instanceof SettingsFragment) && !(fragment instanceof SignUpFragment) && !(fragment instanceof HomeFragment)  ){
             transaction.addToBackStack(tag);
         }
-
-
         transaction.commit();
     }
+
+
 
     static void saveLoginStatus(String usr, Activity activity){
         SharedPreferences sharedPreferences = activity.getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);

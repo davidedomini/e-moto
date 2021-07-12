@@ -13,6 +13,7 @@ public class CardOfferteViewHolder extends RecyclerView.ViewHolder implements Vi
     TextView utente;
     TextView moto;
     TextView prezzo;
+    TextView statoOfferta;
     OnItemListener listener;
 
     public CardOfferteViewHolder(@NonNull View itemView, OnItemListener listener) {
@@ -20,6 +21,7 @@ public class CardOfferteViewHolder extends RecyclerView.ViewHolder implements Vi
         utente = itemView.findViewById(R.id.offerta_acquirente);
         moto = itemView.findViewById(R.id.offerta_moto);
         prezzo = itemView.findViewById(R.id.offerta_prezzo);
+        statoOfferta = itemView.findViewById(R.id.offerta_stato);
         this.listener = listener;
         itemView.setOnClickListener(this);
 

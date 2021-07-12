@@ -168,33 +168,6 @@ public class ListViewModel extends AndroidViewModel {
 
         Log.d("load", "Chiamato il load");
 
-/*
-        db.collection("moto")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()){
-                            for(QueryDocumentSnapshot d : task.getResult()){
-                                Map<String, Object> bike = d.getData();
-                                //Log.d("AAA", d.getData().toString());
-                                String modello = (String) bike.get("modello");
-                                String descrizione = (String) bike.get("descrizione");
-                                String prezzo = (String) bike.get("prezzo");
-                                String luogo = (String) bike.get("luogo");
-                                addCardItem(new CardItem("ic_baseline_directions_bike_24", modello, prezzo, descrizione, luogo));
-                            }
-                        }
-                    }
-                });*/
-        //addCardItem(new CardItem("ic_baseline_directions_bike_24", "Aprilia rs50", "800€", "Scooter aprilia", "Ravenna"));
-        /*addCardItem(new CardItem("ic_baseline_directions_bike_24", "BMW G310R", "3000€", "BMW naked media", "Milano"));
-        addCardItem(new CardItem("ic_baseline_directions_bike_24", "Yamaha mt03", "5000€", "Yamaha naked", "Napoli"));
-        addCardItem(new CardItem("ic_baseline_directions_bike_24", "KTM Duke 390", "6000€", "Naked KTM", "Bologna"));
-        addCardItem(new CardItem("ic_baseline_directions_bike_24", "Ducati Monster", "10000€", "Naked Ducati", "Ravenna"));
-        addCardItem(new CardItem("ic_baseline_directions_bike_24", "Ducati Scrambler", "15000€", "Scambler Ducati", "Salerno"));
-        addCardItem(new CardItem("ic_baseline_directions_bike_24", "Ducati panigale", "2000€", "Ducati sportiva", "Modena"));
-        addCardItem(new CardItem("ic_baseline_directions_bike_24", "Ducati hypermotard", "16000€", "Ducati motard", "Roma"));*/
     }
 
     public void addCardItem(CardItem item){

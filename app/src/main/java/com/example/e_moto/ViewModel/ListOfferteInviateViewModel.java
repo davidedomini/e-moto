@@ -82,7 +82,8 @@ public class ListOfferteInviateViewModel extends AndroidViewModel {
                             String venditore = (String) offerta.get("utente venditore");
                             String moto = (String) offerta.get("moto");
                             String prezzo = (String) offerta.get("prezzo");
-                            addCardItem(new CardItemOfferte(venditore, moto, prezzo));
+                            String stato = (String) offerta.get("stato offerta");
+                            addCardItem(new CardItemOfferte(venditore, moto, prezzo, stato));
                         }
                     }
                 });

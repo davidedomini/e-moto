@@ -33,6 +33,7 @@
                 android:fontFamily="sans-serif"
                 android:layout_marginTop="25dp"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 />
 
             <ImageView
@@ -48,6 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Prezzo"
+                android:textSize="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginHorizontal="15dp"
                 />
@@ -58,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="Descrizione"
                 android:layout_marginTop="15dp"
+                android:textSize="20dp"
                 android:layout_marginHorizontal="15dp"
                 />
 

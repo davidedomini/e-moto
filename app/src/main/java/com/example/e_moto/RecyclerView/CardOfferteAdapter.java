@@ -38,6 +38,7 @@ public class CardOfferteAdapter extends RecyclerView.Adapter<CardOfferteViewHold
         holder.utente.setText(currentCardItem.getUtente());
         holder.moto.setText(currentCardItem.getMoto());
         holder.prezzo.setText(currentCardItem.getPrezzo());
+        holder.statoOfferta.setText(currentCardItem.getStato());
     }
 
     @Override

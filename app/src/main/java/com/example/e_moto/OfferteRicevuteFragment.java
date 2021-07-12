@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,13 +25,17 @@ import com.example.e_moto.RecyclerView.CardOfferteAdapter;
 import com.example.e_moto.RecyclerView.OnItemListener;
 import com.example.e_moto.ViewModel.ListOfferteInviateViewModel;
 import com.example.e_moto.ViewModel.ListOfferteRicevuteViewModel;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OfferteRicevuteFragment extends Fragment implements OnItemListener {
 
@@ -106,10 +111,34 @@ public class OfferteRicevuteFragment extends Fragment implements OnItemListener 
                 .setMessage("Accettare l'offerta selezionata?")
                 .setCancelable(false)
                 .setPositiveButton("Si", (dialog, id) -> acceptOffer(cardItem))
-                .setNegativeButton("NO", (dialog, id) -> dialog.cancel())
+                .setNegativeButton("NO", (dialog, id) -> declineOffer(cardItem))
                 .create()
                 .show();
     }
+
+
+    private void declineOffer(CardItemOfferte cardItem){
+        //Recupero username nelle SharedPreferences
+        SharedPreferences sharedPreferences = getActivity().getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
+        String usr = sharedPreferences.getString("username", "not exist");
+
+        db.collection("offerte")
+                .whereEqualTo("utente venditore", usr)
+                .whereEqualTo("moto", cardItem.getMoto())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        for(DocumentSnapshot d : value.getDocuments()){
+                            db.collection("offerte")
+                                    .document(d.getId())
+                                    .update("stato offerta", "Rifiutata");
+                            Toast.makeText(getActivity().getApplicationContext(), "Offerta rifiutata!", Toast.LENGTH_SHORT ).show();
+                        }
+                        Utilities.insertFragment((AppCompatActivity) getActivity(), new SettingsFragment(), "Settings fragment"); //Vedere se si trova soluzione migliore
+                    }
+                });
+    }
+
 
     private void acceptOffer(CardItemOfferte cardItem){
 
@@ -124,8 +153,11 @@ public class OfferteRicevuteFragment extends Fragment implements OnItemListener 
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         for(DocumentSnapshot d : value.getDocuments()){
-                            //Delete
-                            db.collection("offerte").document(d.getId()).delete();
+
+                           db.collection("offerte")
+                                   .document(d.getId())
+                                   .update("stato offerta", "Accettata");
+                            Toast.makeText(getActivity().getApplicationContext(), "Offerta accettata!", Toast.LENGTH_SHORT ).show();
                         }
                         Utilities.insertFragment((AppCompatActivity) getActivity(), new SettingsFragment(), "Settings fragment"); //Vedere se si trova soluzione migliore
                     }
