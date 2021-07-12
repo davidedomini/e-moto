@@ -103,7 +103,6 @@ public class MotoInVenditaFragment extends Fragment implements OnItemListener{
     }
 
 
-
     private void showDialog(Activity activity, CardItem cardItem){
         new AlertDialog.Builder(activity)
                 .setMessage("Cancellare la moto selezionata dalla vendita?")

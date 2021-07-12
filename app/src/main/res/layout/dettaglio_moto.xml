@@ -77,7 +77,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="25dp"
-                android:text="Contatta venditore"
+                android:text="Fai un'offerta!"
+                android:backgroundTint="#03ac13"
                 android:layout_gravity="center_horizontal"
                 />
 

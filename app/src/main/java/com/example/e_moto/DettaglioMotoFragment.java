@@ -2,6 +2,7 @@ package com.example.e_moto;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.e_moto.ViewModel.ListViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -32,8 +42,10 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 public class DettaglioMotoFragment extends Fragment implements OnMapReadyCallback {
@@ -52,6 +64,11 @@ public class DettaglioMotoFragment extends Fragment implements OnMapReadyCallbac
     private static final String SOURCE_ID = "SOURCE_ID";
     private static final String ICON_ID = "ICON_ID";
     private static final String LAYER_ID = "LAYER_ID";
+
+
+
+    //Firestore
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     @Override
@@ -125,6 +142,59 @@ public class DettaglioMotoFragment extends Fragment implements OnMapReadyCallbac
 
                 }
             });
+
+            view.findViewById(R.id.contatta_venditore).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    //Recupero l'utente dalle SharedPreferences
+                    SharedPreferences sharedPreferences = activity.getApplicationContext().getSharedPreferences("login", Context.MODE_PRIVATE);
+                    String usr = sharedPreferences.getString("username", "not exist");
+
+                    //Recupero dati della moto
+                    CardItem moto = listViewModel.getSelected().getValue();
+
+                    db.collection("moto")
+                            .whereEqualTo("modello", moto.getModello())
+                            .whereEqualTo("descrizione", moto.getDescrizione())
+                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                    Map<String, Object> motoDB = new HashMap<>();
+                                    for(DocumentSnapshot d : value.getDocuments()){
+                                        motoDB = d.getData();
+                                    }
+
+                                    String utenteVenditore = (String) motoDB.get("utente venditore");
+
+                                    //Manda offerta al venditore
+
+                                    HashMap<String, String> nuovaOfferta = new HashMap<>();
+                                    nuovaOfferta.put("utente acquirente", usr);
+                                    nuovaOfferta.put("prezzo", moto.getPrezzo());
+                                    nuovaOfferta.put("utente venditore", utenteVenditore);
+
+                                    db.collection("offerte")
+                                            .add(nuovaOfferta)
+                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                    Toast.makeText(activity.getApplicationContext(), "Offerta inviata!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(activity.getApplicationContext(), "Ops...si è verificato un errore!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            });
+
+                }
+            });
+
         }
 
 
